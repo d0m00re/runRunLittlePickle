@@ -1,2 +1,2 @@
 # runRunLittlePickle
-run run litle pickle
+run run little pickle
