@@ -92,8 +92,35 @@ South: 47.265392
 North: 47.400316
 West: -3.287659
 East: -3.048706
+
+## uv coordinate
+
+Les coordonnées UV sont souvent normalisées, ce qui signifie qu'elles sont comprises entre 0 et 1.
+
+position -> raycast bottom -> get uv -> cacul coordinate with that
+
+target gps -> find pts
 ```
 
-# later opti
+## Why 0.000277777778 === 30 meters ?
 
+The cell size of 0.000277777778 corresponds to a resolution of 30 meters because it represents the distance between adjacent cells in the grid. This conversion is based on the fact that one degree of latitude spans approximately 111,319 meters, and one degree of longitude spans approximately 111,132 kilometers at the equator.
+
+To understand why 0.000277777778 corresponds to 30 meters, let's break down the calculation:
+
+    Latitude Conversion: Since we're dealing with a unit of measurement in meters, we'll focus on the conversion from degrees to meters. One degree of latitude equals approximately 111,319 meters. Therefore, to convert a degree of latitude to meters, you multiply by 111,319.
+
+    Longitude Conversion: The conversion for longitude is more complex due to the Earth's curvature and varies depending on the location. However, for simplicity and assuming we're working near the equator where the approximation holds true, one degree of longitude equals approximately 111,132 kilometers. To convert this to meters, you would multiply by 1,111,320 (since there are 1,000 meters in a kilometer).
+
+    Cell Size Calculation: Given that the cell size is being represented in decimal degrees (a common practice in GIS systems), and assuming a uniform scale across both latitude and longitude, the cell size of 0.000277777778 can be interpreted as follows:
+
+    For latitude: (0.000277777778 \times 111,319 = 30.83333333) meters.
+    For longitude: (0.000277777778 \times 111,132 = 30.86388889) meters.
+
+In practical terms, a cell size of 0.000277777778 translates to approximately 30 meters in both latitude and longitude directions under these approximations. This means that each cell in the grid represents a square area of about 900 square meters (30m x 30m) at the equator.
+
+It's important to note that this explanation simplifies the Earth's geometry and assumes a constant scale, which may not perfectly apply everywhere on Earth due to variations in the Earth's shape and size. For precise geospatial analysis, more sophisticated methods considering the Earth's ellipsoidal shape and varying scales along latitude and longitude lines should be employed.
+
+# later opti
+* use chrome not firefox
 * LOD : have multiple variation of the map file (https://threejs.org/docs/#api/en/objects/LOD)
