@@ -121,6 +121,19 @@ In practical terms, a cell size of 0.000277777778 translates to approximately 30
 
 It's important to note that this explanation simplifies the Earth's geometry and assumes a constant scale, which may not perfectly apply everywhere on Earth due to variations in the Earth's shape and size. For precise geospatial analysis, more sophisticated methods considering the Earth's ellipsoidal shape and varying scales along latitude and longitude lines should be employed.
 
+## warning
+```
+don t use EU_DTM (because of xllcorner    3320790.000000000000
+yllcorner    2770420.000000000000)
+here we don t have real abs gps coordinate but, we will use cop30 data (copernicus global DSM 30m)
+```
+
 # later opti
 * use chrome not firefox
 * LOD : have multiple variation of the map file (https://threejs.org/docs/#api/en/objects/LOD)
+
+# next goal :
+* gps position -> position on the map
+    * {x: -3.168333329678278, y: 47.33298148116576}, Player.tsx:79 47.33298148116576,-3.168333329678278
+    *  Player.tsx:79 47.333462959898235,-3.168333329678278
+* uv -> gps position

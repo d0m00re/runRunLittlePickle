@@ -10,3 +10,12 @@ export interface IDataMap {
     header: IAscInfo;
     rows: number[][];
 }
+
+export interface IFindPosWithGps {
+        header : IAscInfo,
+        gpsPos : {x : number, y : number},
+        geometry : {
+            dim : {width : number, height : number},
+         //   uv : {x : number, y : number}
+        }
+}
