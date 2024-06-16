@@ -3,7 +3,7 @@ import { EsriGridService } from './esri-grid.service';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 
-const filePathBelleIle = "belleile17184665949491072719353.asc"
+const filePathBelleIle = "belleile.asc"
 
 
 @Controller('esri-grid')

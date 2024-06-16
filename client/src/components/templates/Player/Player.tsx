@@ -1,8 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from "three";
-import { utmToGeographicCoord } from '@/utils/utmToGeographicCoord';
 import proj4 from 'proj4';
 
 // test
@@ -14,8 +12,6 @@ function convertToGPS(x_map: number, y_map: number): { lat: number, lon: number 
     const [lon, lat] = proj4(utmZone31N, wgs84, [x_map, y_map]);
     return { lat, lon };
 }
-
-//
 
 function Player() {
     const { camera, scene } = useThree();
@@ -59,11 +55,11 @@ function Player() {
         console.log(intersects);
         if (intersects.length && intersects[0].uv) {
             const fake = {
-                ncols    : 677,
-                nrows    : 600,
-                xllcorner : -3.287659,//3320790.000000000000,
-                yllcorner  : 47.265392,//2770420.000000000000,
-                cellsize : 30.000000000000
+                ncols    : 860,
+                nrows    : 486,
+                xllcorner : -3.287777777778,//3320790.000000000000,
+                yllcorner  : 47.265416666667,//2770420.000000000000,
+                cellsize : 0.000277777778
             }
             let uv = intersects[0].uv;
             console.log("uv")
@@ -75,14 +71,13 @@ function Player() {
             }
 
             let _coordMap = {
-                x : 3320790.0 + _p.x * fake.cellsize,
-                y : 2770420.0 + _p.y * fake.cellsize
+                x : fake.xllcorner + _p.x * fake.cellsize,
+                y : fake.yllcorner + _p.y * fake.cellsize
             }
         
-            let gpsCoordinate = utmToGeographicCoord(_coordMap.x, _coordMap.y);
-            console.log("gps coordinate")
-            console.log(gpsCoordinate)
-            console.log(convertToGPS(3320790, 2770420))
+            console.log("gps coordinate : ")
+            console.log(_coordMap)
+            console.log(`${_coordMap.y},${_coordMap.x}`)
         }
     }, [position])
     
