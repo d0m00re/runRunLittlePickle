@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { PerspectiveCamera } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { Vector3 } from 'three';
 import useStorePizza from "./../Store/pizza.zustand";
@@ -21,6 +20,8 @@ const Camera = () => {
         cameraRef.current.lookAt(origin);
     });
     return (
+        <>
+        {/*
         <PerspectiveCamera
             makeDefault
             ref={cameraRef}
@@ -30,7 +31,8 @@ const Camera = () => {
             far={1000}
             position={[0, 10, 10]} // Set the camera position
             zoom={zoom}
-        />
+        />*/}
+        </>
     );
 };
 

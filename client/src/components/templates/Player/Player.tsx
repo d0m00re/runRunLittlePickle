@@ -16,14 +16,11 @@ function convertToGPS(x_map: number, y_map: number): { lat: number, lon: number 
 
 function Player() {
     const storeTopoMap = useTopoMapStore();
-    const { camera, scene } = useThree();
+    const { scene } = useThree();
     const ref = useRef<any>();
     const [position, setPosition] = useState<[number, number, number]>([0, 0, 0]);
     const speed = 0.1;
     const raycaster = new THREE.Raycaster();
-
-
-
 
     const handleKeyDown = (event: any) => {
         switch (event.key) {

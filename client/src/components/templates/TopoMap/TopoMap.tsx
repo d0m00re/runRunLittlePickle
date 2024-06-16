@@ -3,17 +3,16 @@ import React, { useEffect, useState } from 'react';
 import useTopoMapStore from './topoMap.store';
 import { IAscInfo, IDataMap, IFindPosWithGps } from './topoMap.entity';
 import * as THREE from "three";
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import Player from '../Player/Player';
 import { utmToGeographicCoord } from '@/utils/utmToGeographicCoord';
 import { IVect3d } from '../Pizza/utils/vect3d';
 
-type Props = {}
+type ArrVec3 = [number, number, number];
 
-const sphere = new THREE.PlaneGeometry(3., 1.4, 50, 50);
-
-const GLOBAL_SCALE : [number, number, number] = [1, 1, 1];
-
+const GLOBAL_SCALE : ArrVec3 = [3, 3, 1];
+const GLOBAL_TOPO_MAP_POS : ArrVec3 = [0, 0, 0];
+const GLOBAL_CAMERA_BASE_POS : ArrVec3 = [0,0, 800];
 //----------
 const findPosWithGps = ( _props : IFindPosWithGps) => {
 
@@ -52,8 +51,8 @@ const findPosWithGps = ( _props : IFindPosWithGps) => {
 
     //
     const positionFind = {
-        x: x + casePositionGps.x,
-        y: y + casePositionGps.y
+        x: x + casePositionGps.x * GLOBAL_SCALE[0],
+        y: y + casePositionGps.y * GLOBAL_SCALE[1]
     }
 
     console.log("position find")
@@ -103,20 +102,22 @@ const Terrain = ({ geometry }: { geometry: THREE.PlaneGeometry }) => {
             <mesh
                 ref={ref}
                 geometry={geometry}
-                position={[0, 0, -200]}
+                position={GLOBAL_TOPO_MAP_POS}
                 scale={GLOBAL_SCALE}>
                 <meshStandardMaterial attach="material" color="lightgreen" wireframe={true} />
             </mesh>
             <axesHelper />
-            <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+            <pointLight position={[-10, -10, 400]} decay={0} intensity={Math.PI} />
         </>
     );
 };
 
-function TopoMap({ }: Props) {
+function TopoMap() {
     const storeTopoMap = useTopoMapStore();
     const [geometry, setGeometry] = useState<any>();
     const [ptsList, setPtsList] = useState<IVect3d[]>([]);
+    const { camera } = useThree();
+
 
     useEffect(() => {
         if (storeTopoMap.topoMap?.rows.length) {
@@ -171,9 +172,10 @@ function TopoMap({ }: Props) {
             { x : -3.168333329678278, y :47.332916666721 - THIRTY_METER * 100},
             */
             {y : 47.36362242534034, x : -3.1581356964647354}
-
-
         ];
+
+        
+        
 
 
         let positionMapGpsList = currentGpsCoordList.map(gpsCoord => findPosWithGps({
@@ -190,13 +192,18 @@ function TopoMap({ }: Props) {
         let encodePts : [number, number, number][] = positionMapGpsList.map(e => [
             e.x,
             e.y,
-            -150])
+            0])
 
         setPtsList(old => ([
             ...old,
             ...encodePts
         ]))
     }
+
+    useEffect(() => {
+        // Set the initial position of the camera here if needed
+        camera.position.set(...GLOBAL_CAMERA_BASE_POS);
+      }, [camera]);
 
     useEffect(() => {
         letsGoMan();
@@ -208,7 +215,7 @@ function TopoMap({ }: Props) {
     //maxDistance={100000} 
     return (
         <>
-            <OrbitControls />
+            <OrbitControls makeDefault />
             <Player />
             {geometry && <Terrain geometry={geometry} />}
         
@@ -219,7 +226,7 @@ function TopoMap({ }: Props) {
                         visible
                         userData={{ hello: 'world' }}
                         position={e}
-                        scale={[10,10,10]}
+                        
                     >
                         <sphereGeometry args={[1, 16, 16]} />
                         <meshStandardMaterial color="hotpink" />
