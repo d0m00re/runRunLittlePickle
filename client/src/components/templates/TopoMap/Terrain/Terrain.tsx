@@ -32,6 +32,7 @@ const Terrain = ({ geometry }: ITerrain) => {
     return (
         <>
             <mesh
+                name='topoMap'
                 ref={ref}
                 geometry={geometry}
                 position={GLOBAL_TOPO_MAP_POS}

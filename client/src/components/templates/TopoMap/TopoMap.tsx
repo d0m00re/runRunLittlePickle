@@ -1,4 +1,4 @@
-import { OrbitControls } from '@react-three/drei';
+import { Line, OrbitControls } from '@react-three/drei';
 import React, { useEffect, useState } from 'react';
 import useTopoMapStore from './topoMap.store';
 import { IAscInfo, IDataMap, IFindPosWithGps } from './topoMap.entity';
@@ -21,7 +21,8 @@ function TopoMap() {
     const storeTopoMap = useTopoMapStore();
     const [geometry, setGeometry] = useState<any>();
     const [ptsList, setPtsList] = useState<IVect3d[]>([]);
-    const { camera } = useThree();
+    const { camera, scene } = useThree();
+    
 
 
     useEffect(() => {
@@ -40,13 +41,13 @@ function TopoMap() {
         }
     }, [storeTopoMap.topoMap])
 
-//47.3506056,-3.1600709
+    //47.3506056,-3.1600709
 
     const generateGpsPosToMapPos = () => {
         let topoMap = storeTopoMap.topoMap;
-        if (!geometry?.parameters || !topoMap) return ;
+        if (!geometry?.parameters || !topoMap) return;
         const currentGpsCoordList = [
-           // { x : -3.168333329678278, y :47.332916666721},
+            // { x : -3.168333329678278, y :47.332916666721},
             /*
             { x : -3.168333329678278 + THIRTY_METER * 5, y :47.332916666721},            
             { x : -3.168333329678278 + THIRTY_METER * 10, y :47.332916666721},            
@@ -77,16 +78,19 @@ function TopoMap() {
             { x : -3.168333329678278, y :47.332916666721},
             { x : -3.1581356964647354, y : 47.36362242534034},
                */
-            { y : 47.3506056, x :-3.1600709}
+            { y: 47.3506056, x: -3.1600709 }, // near le palais
+            { y: 47.3886866, x: -3.2541209 }, // pointe des poulains
+            { y: 47.3256126, x: -3.2399079 }, // plage du donant
+            { y: 47.2938996, x: -3.0783549 } // plage locmaria port maria
         ];
 
         let positionMapGpsList = currentGpsCoordList.map(gpsCoord => findPosWithGps({
-            header : topoMap.header,
-            gpsPos : gpsCoord,
-            geometry : {
-                dim : {
-                    width : geometry.parameters.width,
-                    height : geometry.parameters.height
+            header: topoMap.header,
+            gpsPos: gpsCoord,
+            geometry: {
+                dim: {
+                    width: geometry.parameters.width,
+                    height: geometry.parameters.height
                 }
             }
         }))
@@ -95,10 +99,38 @@ function TopoMap() {
         console.log(geometry.parameters);
         console.log("-------")
 
-        let encodePts : [number, number, number][] = positionMapGpsList.map(e => [
+        let encodePts: [number, number, number][] = positionMapGpsList.map(e => [
             e.x,
             e.y,
-            100]);
+            60]);
+        // all pts
+
+        let ptsNearMap : {x : number, y : number, z : number}[] = [];
+        if (camera && encodePts && encodePts.length) {
+            ptsNearMap = encodePts.map(pos => {
+                const raycaster = new THREE.Raycaster();
+                raycaster.camera = camera;
+                raycaster.set(new THREE.Vector3(...pos), new THREE.Vector3(0, 0, -1));
+                  const intersects = raycaster.intersectObjects(scene.children).filter(e => e.object.name === "topoMap");
+                  // could crash here if no pts in array
+                  if ( !intersects || intersects.length < 1) {
+                    return {x : 0,y:0,z:0};
+                  }
+                  return (intersects[0].point);
+            })
+            console.log("==========================================================>>>>>>")
+            console.log(ptsNearMap);
+        }
+
+        // update pts with z
+        encodePts = encodePts.map((pts, i) => ([
+            pts[0],
+            pts[1],
+            ptsNearMap[i].z
+        ]))
+
+
+
 
         // inject base pts
         /*
@@ -119,7 +151,7 @@ function TopoMap() {
     useEffect(() => {
         // Set the initial position of the camera here if needed
         camera.position.set(...GLOBAL_CAMERA_BASE_POS);
-      }, [camera]);
+    }, [camera]);
 
     useEffect(() => {
         generateGpsPosToMapPos();
@@ -127,14 +159,14 @@ function TopoMap() {
 
     console.log("===== PTS LIST ======")
     console.log(ptsList);
-    
+
     //maxDistance={100000} 
     return (
         <>
             <OrbitControls makeDefault />
             <Player />
             {geometry && <Terrain geometry={geometry} />}
-        
+
             {
                 ptsList.map((pos, i) =>
                     <mesh
@@ -142,13 +174,21 @@ function TopoMap() {
                         visible
                         userData={{ hello: 'world' }}
                         position={pos}
-                        scale={[15,15,15]}
+                        scale={[15, 15, 15]}
                     >
                         <sphereGeometry args={[1, 16, 16]} />
                         <meshStandardMaterial color="hotpink" />
                     </mesh>
 
                 )
+            }
+            {ptsList && ptsList.length ?
+                <Line
+                    points={ptsList}
+                    color="blue"
+                    lineWidth={1}
+                    dashed={false}
+                /> : <></>
             }
         </>
     )
