@@ -4,13 +4,26 @@ import type { } from '@redux-devtools/extension'; // required for devtools typin
 import * as entities from "./topoMap.entity";
 import { parseTopoMap } from './topoMap.utils';
 
+type TTmpType = {x : number, y : number};
+
 export interface TopoMapState {
     topoMap: entities.IDataMap | undefined;
+    itinaryPtsList : TTmpType[];
     setTopoMap: (data: string[]) => void;
+    setItinaryPtsList : (list : TTmpType[]) => void;
 }
 
 const useTopoMapStore = create<TopoMapState>((set) => ({
     topoMap: undefined,
+    itinaryPtsList : [],
+    setItinaryPtsList: (list : TTmpType[]) => {
+      set((state) => {
+        return {
+          ...state,
+          itinaryPtsList : list
+        }
+      })
+    },
     setTopoMap: (rows: string[]) => {
         let topoMap = parseTopoMap(rows);
         set((state) => {

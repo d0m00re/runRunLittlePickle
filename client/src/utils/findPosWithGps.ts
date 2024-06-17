@@ -15,10 +15,10 @@ const findPosWithGps = ( _props : IFindPosWithGps) => {
 
     }
     // target uv : _Vector2 {x: 0.5003488592131674, y: 0.5068587206590386}
-    console.log("start map gps coord :");
-    console.log(startMapGpsCoord);
-    console.log("current gps coord :");
-    console.log(_props.gpsPos);
+   // console.log("start map gps coord :");
+   // console.log(startMapGpsCoord);
+   // console.log("current gps coord :");
+   // console.log(_props.gpsPos);
 
     // sub vector
     const diffGpsCoord = {
@@ -36,8 +36,8 @@ const findPosWithGps = ( _props : IFindPosWithGps) => {
     // scale on the other form influence it?
     const x = -(params.width * GLOBAL_SCALE[0]) / 2;
     const y = -(params.height * GLOBAL_SCALE[1]) / 2;
-    console.log("diff gps coord");
-    console.log(diffGpsCoord)
+ //   console.log("diff gps coord");
+ //   console.log(diffGpsCoord)
 
     //
     const positionFind = {
@@ -45,8 +45,8 @@ const findPosWithGps = ( _props : IFindPosWithGps) => {
         y: y + casePositionGps.y * GLOBAL_SCALE[1]
     }
 
-    console.log("position find")
-    console.log(positionFind);
+   // console.log("position find")
+   // console.log(positionFind);
     return positionFind;
 }
 

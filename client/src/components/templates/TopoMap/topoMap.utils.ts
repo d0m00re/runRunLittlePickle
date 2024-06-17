@@ -50,9 +50,9 @@ export const parseHeader = (data: string[]): IAscInfo => {
   }
 
   export function createTerrainGeometry(data: IDataMap) {
-    console.log(" * create terrain geometry")
-    console.log(data.header)
-    console.log(data.rows)
+   // console.log(" * create terrain geometry")
+  //  console.log(data.header)
+  //  console.log(data.rows)
 
     const geometry = new THREE.PlaneGeometry(
         data.header.ncols,

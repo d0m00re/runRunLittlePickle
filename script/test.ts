@@ -52,18 +52,18 @@ const main = async () => {
     let data = await readFile();
 
     let header = parseHeader(data);
-    console.log(header);
+//    console.log(header);
 
     //
     for (let x = 0; x < 6 && x < data.length; x++) {
-      console.log(data[x])
+  //    console.log(data[x])
     }
 
-    console.log("length : ", data[10].split(" ").length)
+    //console.log("length : ", data[10].split(" ").length)
     //
 
-    console.log("Hello world : ", filePath);
-    console.log(data.length);
+   // console.log("Hello world : ", filePath);
+  //  console.log(data.length);
 }
 
 main();

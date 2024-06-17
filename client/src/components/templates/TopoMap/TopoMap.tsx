@@ -31,8 +31,8 @@ function TopoMap() {
 
             // geo coordinatw
             let coord = utmToGeographicCoord(storeTopoMap.topoMap.header.xllcorner, storeTopoMap.topoMap.header.yllcorner);
-            console.log("coord");
-            console.log(coord);
+          //  console.log("coord");
+          //  console.log(coord);
             setGeometry(geo);
         }
 
@@ -46,7 +46,9 @@ function TopoMap() {
     const generateGpsPosToMapPos = () => {
         let topoMap = storeTopoMap.topoMap;
         if (!geometry?.parameters || !topoMap) return;
-        const currentGpsCoordList = [
+        const currentGpsCoordList = storeTopoMap.itinaryPtsList;
+        
+        let old = [
             // { x : -3.168333329678278, y :47.332916666721},
             /*
             { x : -3.168333329678278 + THIRTY_METER * 5, y :47.332916666721},            
@@ -95,9 +97,9 @@ function TopoMap() {
             }
         }))
 
-        console.log("------------- GEOMETRY DIM")
-        console.log(geometry.parameters);
-        console.log("-------")
+       // console.log("------------- GEOMETRY DIM")
+       // console.log(geometry.parameters);
+       // console.log("-------")
 
         let encodePts: [number, number, number][] = positionMapGpsList.map(e => [
             e.x,
@@ -118,15 +120,15 @@ function TopoMap() {
                   }
                   return (intersects[0].point);
             })
-            console.log("==========================================================>>>>>>")
-            console.log(ptsNearMap);
+        //    console.log("==========================================================>>>>>>")
+        //    console.log(ptsNearMap);
         }
 
         // update pts with z
         encodePts = encodePts.map((pts, i) => ([
             pts[0],
             pts[1],
-            ptsNearMap[i].z
+            ptsNearMap[i].z + 20
         ]))
 
 
@@ -139,8 +141,8 @@ function TopoMap() {
         encodePts.push([100,100,100]);
         */
 
-        console.log("encode pts")
-        console.log(encodePts);
+     //   console.log("encode pts")
+     //   console.log(encodePts);
 
         setPtsList(old => ([
             ...old,
@@ -157,8 +159,8 @@ function TopoMap() {
         generateGpsPosToMapPos();
     }, [geometry]);
 
-    console.log("===== PTS LIST ======")
-    console.log(ptsList);
+  //  console.log("===== PTS LIST ======")
+   // console.log(ptsList);
 
     //maxDistance={100000} 
     return (
@@ -167,7 +169,7 @@ function TopoMap() {
             <Player />
             {geometry && <Terrain geometry={geometry} />}
 
-            {
+            {/*
                 ptsList.map((pos, i) =>
                     <mesh
                         key={`test-key-${i}`}
@@ -181,12 +183,12 @@ function TopoMap() {
                     </mesh>
 
                 )
-            }
+            */}
             {ptsList && ptsList.length ?
                 <Line
                     points={ptsList}
-                    color="blue"
-                    lineWidth={1}
+                    color="black"
+                    lineWidth={20}
                     dashed={false}
                 /> : <></>
             }

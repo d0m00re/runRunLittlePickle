@@ -128,6 +128,11 @@ yllcorner    2770420.000000000000)
 here we don t have real abs gps coordinate but, we will use cop30 data (copernicus global DSM 30m)
 ```
 
+# prio opti
+* raytracing for finding ground take too much time, probably better to rework this part
+1) get height from the map directly with position calculation
+2) or maybe that come from too many ratracing init
+
 # later opti
 * use chrome not firefox
 * LOD : have multiple variation of the map file (https://threejs.org/docs/#api/en/objects/LOD)

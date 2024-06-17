@@ -54,26 +54,26 @@ function Player() {
         pos[2] -= 1.1;
         raycaster.set(new THREE.Vector3(...pos), new THREE.Vector3(0, 0, -1));
         const intersects = raycaster.intersectObjects(scene.children);
-        console.log(intersects);
+      //  console.log(intersects);
         if (intersects.length && topoMapHeader && intersects[0].uv) {
            
-            let uv = intersects[0].uv;
-            console.log("uv")
-            console.log(uv);
+            //let uv = intersects[0].uv;
             //Convert UV to pixel coordinates:
+            /*
             let _p = {
                 x : uv.x * topoMapHeader.ncols, //ncols
                 y : uv.y * topoMapHeader.nrows //nrows
-            }
+            }*/
 
+            /*
             let _coordMap = {
                 x : topoMapHeader.xllcorner + _p.x * topoMapHeader.cellsize,
                 y : topoMapHeader.yllcorner + _p.y * topoMapHeader.cellsize
-            }
+            }*/
         
-            console.log("gps coordinate : ")
-            console.log(_coordMap)
-            console.log(`${_coordMap.y},${_coordMap.x}`)
+           // console.log("gps coordinate : ")
+           // console.log(_coordMap)
+           // console.log(`${_coordMap.y},${_coordMap.x}`)
         }
     }, [position])
     
