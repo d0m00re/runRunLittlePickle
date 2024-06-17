@@ -4,19 +4,32 @@ import * as THREE from "@react-three/fiber";
 import "./index.css";
 import TopoMap from "./components/templates/TopoMap/TopoMap";
 import useTopoMapStore from "./components/templates/TopoMap/topoMap.store";
-import { getFile } from "./network/getFile";
+import { getFileMap, getFileItinary } from "./network/getFile";
 
 function App() {
   const storeTopoMap = useTopoMapStore();
 
+  // rework with allSettled
   useEffect(() => {
-    getFile()
+    // file map
+    getFileMap()
       .then(resp => {
         let lineArr = resp.split("\n");
         storeTopoMap.setTopoMap(lineArr);
         return 0;
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
+
+      // file itinary
+      getFileItinary()
+      .then(resp => {
+        console.log("resp : ")
+        console.log(resp)
+       // let lineArr = resp.split("\n");
+       // storeTopoMap.setTopoMap(lineArr);
+        return 0;
+      })
+      .catch(err => console.log(err));
   }, []);
   useEffect(() => {
     console.log("STORE : data map")
