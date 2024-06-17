@@ -1,4 +1,5 @@
 import { IAscInfo, IDataMap } from "./topoMap.entity";
+import * as THREE from "three";
 
 export const makeEmptyIAscInfo = (): IAscInfo => ({
     ncols: 0,
@@ -47,3 +48,28 @@ export const parseHeader = (data: string[]): IAscInfo => {
     }
 
   }
+
+  export function createTerrainGeometry(data: IDataMap) {
+    console.log(" * create terrain geometry")
+    console.log(data.header)
+    console.log(data.rows)
+
+    const geometry = new THREE.PlaneGeometry(
+        data.header.ncols,
+        data.header.nrows,
+        data.header.ncols - 1,
+        data.header.nrows - 1);
+
+    // Apply the height data to the vertices of the geometry
+    for (let i = 0; i < data.header.nrows; i++) {
+        for (let j = 0; j < data.header.ncols; j++) {
+            const z = data.rows[i][j];
+            const index = i * data.header.ncols + j;
+            geometry.attributes.position.setZ(index, z);
+        }
+    }
+
+    // Normalize the geometry
+    geometry.computeVertexNormals();
+    return geometry;
+}
