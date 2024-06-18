@@ -142,3 +142,35 @@ here we don t have real abs gps coordinate but, we will use cop30 data (copernic
     * {x: -3.168333329678278, y: 47.33298148116576}, Player.tsx:79 47.33298148116576,-3.168333329678278
     *  Player.tsx:79 47.333462959898235,-3.168333329678278
 * uv -> gps position
+
+
+### get pos array with real world pos
+```
+### BASE PTS INFO
+    0 : -68.27400097498139
+    1 : 311.12999916428566
+    2 :  100
+
+### TOTAL DIM MAP :
+ncols     dim_x =    860 * SCALE.x
+nrows     dim_y =    486 * SCALE.y
+
+### MIDDLE MAP 
+middle_dim_x = dim_x / 2;
+middle_dim_y = dim.y / 2;
+
+### DIM ONE CASE :
+dimOneCase.x = SCALE.x
+dimOneCase.y = SCALE.y
+
+### Calcul : 
+getting current case 
+let absPos.x = (posPts.x + middle_dim_x);
+let arrPos.x = Math.floor(absPos.x / dimOneCase.x);
+
+let absPos.y = (posPts.y + middle_dim_y);
+let arrPos.y = Math.floor(absPos.y / dimOneCase.y);
+
+### DESIRED OUTPUT : 
+    pos on map data [x, y] 
+```
