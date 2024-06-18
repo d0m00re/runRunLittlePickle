@@ -1,3 +1,5 @@
+import findPosWithGps from "@/utils/findPosWithGps";
+import { IVec3dField } from "../Pizza/utils/vect3d";
 import { IAscInfo, IDataMap } from "./topoMap.entity";
 import * as THREE from "three";
 
@@ -72,4 +74,79 @@ export const parseHeader = (data: string[]): IAscInfo => {
     // Normalize the geometry
     geometry.computeVertexNormals();
     return geometry;
+}
+
+//----------------------------------------
+interface IGenerateGpsPosToMapPos {
+  topoMap : IDataMap | undefined;
+  itinaryPtsList : IVec3dField[];
+  geometry : any;
+  globalScale : [number, number, number];
+}
+
+export const _generateGpsPosToMapPos = (props : IGenerateGpsPosToMapPos) => {
+  const {topoMap, itinaryPtsList, geometry, globalScale} = props;
+
+  if (!geometry?.parameters || !topoMap) return;
+  const currentGpsCoordList = itinaryPtsList;
+
+  // find pos on map current viewport
+  let dim = {
+      width: geometry.parameters.width,
+      height: geometry.parameters.height
+  }
+  let positionMapGpsList = currentGpsCoordList.map((gpsCoord : any) => findPosWithGps({
+      header: topoMap.header,
+      gpsPos: gpsCoord,
+      geometry: {dim}
+  }))
+
+  // encode pts with fake height
+  let encodePts: [number, number, number][] = positionMapGpsList.map(e => [
+      e.x,
+      e.y,
+      100]);
+
+  // update pts with z
+  let dimOneCase = {
+      x : globalScale[0],
+      y : globalScale[1]
+  }
+
+  let dimTotal = {
+      x : (topoMap?.header.ncols ?? 1) * dimOneCase.x,
+      y : (topoMap?.header.nrows ?? 1) * dimOneCase.y
+  };
+
+  let middleMap = {
+      x : dimTotal.x / 2,
+      y : dimTotal.y / 2
+  }
+
+  // let s go man
+  // @ts-ignore
+  let newFuckingPts : [number, number, number][] = encodePts.map((posItiPts, i) => {
+      let absPos = {
+          x : posItiPts[0] + middleMap.x,
+          y : posItiPts[1] + middleMap.y
+      }
+
+      let arrPos = {
+          x : Math.floor(absPos.x / dimOneCase.x) ,
+          y : Math.floor(absPos.y / dimOneCase.y)
+      }
+
+      if (!topoMap)
+          return [];
+      let arr : [number, number, number] = [
+          encodePts[i][0],
+          encodePts[i][1],
+          topoMap.rows[arrPos.y][arrPos.x]
+      ];
+      return arr;
+  });
+
+  //
+  return newFuckingPts;
+  //storeTopoMap.setItinaryPtsListVp(newFuckingPts);
 }
