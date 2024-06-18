@@ -1,5 +1,9 @@
 export type IVect3d = [number, number, number];
-
+export type IVec3dField = {
+    x : number;
+    y : number;
+    z : number;
+}
 export const addVect3d = (v1 : IVect3d, v2 : IVect3d) : IVect3d => {
     return ([
         v1[0] + v2[0],

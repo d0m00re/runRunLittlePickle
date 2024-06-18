@@ -25,12 +25,7 @@ function App() {
     // file itinary
     getFileItinary()
       .then(resp => {
-        console.log("resp : ")
-        console.log(resp)
-        // parsing test 
-
-        //  if (XMLValidator.validate()) {
-     
+        // parse gps visorando file
         const parser = new XMLParser({
           ignoreAttributes : false
         });
@@ -43,25 +38,16 @@ function App() {
         console.log("extract coord data : ")
         let gpsCoord = jsonObj.gpx.trk.trkseg.trkpt;
         gpsCoord = gpsCoord.map((e : any) => ({
+          x : e["@_lon"],
           y : e["@_lat"],
-          x : e["@_lon"]
+          z : 0
         }));
-
         storeTopoMap.setItinaryPtsList(gpsCoord);
-
-        console.log(gpsCoord);
-        console.log("-----------------------------------");
-        //  }
-
-        // let lineArr = resp.split("\n");
-        // storeTopoMap.setTopoMap(lineArr);
         return 0;
       })
       .catch(err => console.log(err));
   }, []);
   useEffect(() => {
-   // console.log("STORE : data map")
-    //console.log(storeTopoMap.topoMap);
   }, [storeTopoMap.topoMap])
 
 

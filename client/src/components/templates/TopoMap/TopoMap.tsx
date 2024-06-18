@@ -17,7 +17,6 @@ console.log("* init global scale :", GLOBAL_SCALE);
 function TopoMap() {
     const storeTopoMap = useTopoMapStore();
     const [geometry, setGeometry] = useState<any>();
-    const [ptsList, setPtsList] = useState<IVect3d[]>([]);
     const { camera } = useThree();
 
     useEffect(() => {
@@ -93,12 +92,10 @@ function TopoMap() {
                 storeTopoMap.topoMap.rows[arrPos.y][arrPos.x]
             ];
             return arr;
-        })
-       
-        setPtsList(old => ([
-            ...old,
-            ...newFuckingPts
-        ]));
+        });
+
+        //
+        storeTopoMap.setItinaryPtsListVp(newFuckingPts);
     }
 
     useEffect(() => {
@@ -115,9 +112,9 @@ function TopoMap() {
             <OrbitControls makeDefault />
             <Player />
             {geometry && <Terrain geometry={geometry} />}
-            {ptsList && ptsList.length ?
+            {storeTopoMap.itinaryPtsListVp && storeTopoMap.itinaryPtsListVp.length ?
                 <Line
-                    points={ptsList}
+                    points={storeTopoMap.itinaryPtsListVp}
                     color="black"
                     lineWidth={5}
                     dashed={false}
