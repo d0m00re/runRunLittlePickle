@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { OrbitControls } from '@react-three/drei';
-import { useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 
 import useTopoMapStore from './topoMap.store';
 import Player from '../Player/Player';
@@ -8,6 +8,7 @@ import Terrain from './Terrain/Terrain';
 import { _generateGpsPosToMapPos, createTerrainGeometry } from './topoMap.utils';
 import { GLOBAL_CAMERA_BASE_POS, GLOBAL_SCALE } from './config/config';
 import LineItinary from './LineItinary/LineItinary';
+import { normalizeVect3d, subVect3d } from '../Pizza/utils/vect3d';
 
 console.log("* init camera pos : ", GLOBAL_CAMERA_BASE_POS);
 console.log("* init global scale :", GLOBAL_SCALE);
@@ -16,6 +17,9 @@ function TopoMap() {
     const storeTopoMap = useTopoMapStore();
     const [geometry, setGeometry] = useState<any>();
     const { camera } = useThree();
+
+    //
+    const currentStepRef = useRef(0);
 
     useEffect(() => {
         if (storeTopoMap.topoMap?.rows.length)
@@ -28,10 +32,10 @@ function TopoMap() {
 
     const generateGpsPosToMapPos = () => {
         const newFuckingPts = _generateGpsPosToMapPos({
-            topoMap : storeTopoMap.topoMap,
-            itinaryPtsList : storeTopoMap.itinaryPtsList,
-            geometry : geometry,
-            globalScale : GLOBAL_SCALE
+            topoMap: storeTopoMap.topoMap,
+            itinaryPtsList: storeTopoMap.itinaryPtsList,
+            geometry: geometry,
+            globalScale: GLOBAL_SCALE
         })
         if (newFuckingPts !== undefined)
             storeTopoMap.setItinaryPtsListVp(newFuckingPts);
@@ -41,6 +45,32 @@ function TopoMap() {
     useEffect(() => {
         camera.position.set(...GLOBAL_CAMERA_BASE_POS);
     }, [camera]);
+
+ 
+    useFrame((state, delta, xrFrame) => {
+        if (storeTopoMap.itinaryPtsListVp.length && currentStepRef.current < storeTopoMap.itinaryPtsListVp.length - 2) {
+            
+            // dirrection vector
+            let vec1 = storeTopoMap.itinaryPtsListVp[currentStepRef.current];
+            let vec2 = storeTopoMap.itinaryPtsListVp[currentStepRef.current];
+
+            let vecDiff = subVect3d(vec2, vec1);
+            let vecNormalizeDir = normalizeVect3d(vecDiff);
+
+//            camera.position.set(...storeTopoMap.itinaryPtsListVp[currentStepRef.current]);
+            let cameraPos = storeTopoMap.itinaryPtsListVp[currentStepRef.current];
+            cameraPos[2] = 100;
+
+            let cameraLookAt : [number, number, number] = [vec2[0], vec2[1], 100];
+            camera.position.set(...cameraPos);
+
+            camera.lookAt(...cameraLookAt);
+            //----
+            
+            currentStepRef.current += 1;
+        }
+    });
+
 
     useEffect(() => {
         generateGpsPosToMapPos();
@@ -53,7 +83,7 @@ function TopoMap() {
             {geometry && <Terrain geometry={geometry} />}
             {(storeTopoMap.itinaryPtsList && storeTopoMap.itinaryPtsListVp.length) && <LineItinary
                 ptsList={storeTopoMap.itinaryPtsListVp}
-            /> }
+            />}
         </>
     )
 }

@@ -35,3 +35,12 @@ export const divVect3d = (v1 : IVect3d, v2 : IVect3d) : IVect3d => {
         v1[2] / v2[2],
     ]);
 }
+
+export const normalizeVect3d = (v1 : IVect3d) : IVect3d => {
+    let tot = v1[0] + v1[1] + v1[2];
+    return [
+        v1[0] / tot,
+        v1[1] / tot,
+        v1[2] / tot
+    ];
+}
