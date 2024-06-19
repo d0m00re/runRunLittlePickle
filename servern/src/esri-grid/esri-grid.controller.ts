@@ -1,7 +1,8 @@
-import { Controller, Get, StreamableFile } from '@nestjs/common';
+import { Controller, Get, Query, StreamableFile, UsePipes, ValidationPipe } from '@nestjs/common';
 import { EsriGridService } from './esri-grid.service';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import { DtoGetFileCoord } from './esri-grid.schema';
 
 const filePathBelleIle = "belleile.asc";
 const fileGpx = "palais-la-pointe-des-poulains.gpx"
@@ -10,6 +11,25 @@ const fileGpx = "palais-la-pointe-des-poulains.gpx"
 @Controller('esri-grid')
 export class EsriGridController {
     constructor(private readonly esriGrid: EsriGridService) { }
+
+    @Get("test")
+    @UsePipes(new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+    }))
+
+    getData(@Query() query : DtoGetFileCoord)
+    : Promise<any> {
+        console.log("data")
+        console.log(query)
+        return Promise.resolve();
+    }
+
+    @Get("hello")
+    getEnv(): string {
+        return `${JSON.stringify(process.env)}`
+    }
+
 
     @Get("package.json")
     getFile(): StreamableFile {

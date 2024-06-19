@@ -1,4 +1,3 @@
-import React from 'react'
 import { IVect3d } from '../../Pizza/utils/vect3d';
 import { Line } from '@react-three/drei';
 

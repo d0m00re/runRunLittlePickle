@@ -23,11 +23,7 @@ interface ITerrain {
 const Terrain = ({ geometry }: ITerrain) => {
     const ref = React.useRef<THREE.Mesh>(null);
 
-    useFrame(() => {
-        //  if (ref.current) {
-        //      ref.current.rotation.z += 0.005;
-        //  }
-    });
+    useFrame(() => {});
 
     return (
         <>

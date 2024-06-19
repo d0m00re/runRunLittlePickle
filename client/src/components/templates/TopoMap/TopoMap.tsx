@@ -37,8 +37,8 @@ function TopoMap() {
             storeTopoMap.setItinaryPtsListVp(newFuckingPts);
     }
 
+    // Set the initial position of the camera here if needed
     useEffect(() => {
-        // Set the initial position of the camera here if needed
         camera.position.set(...GLOBAL_CAMERA_BASE_POS);
     }, [camera]);
 
@@ -48,7 +48,7 @@ function TopoMap() {
 
     return (
         <>
-            <OrbitControls makeDefault />
+            <OrbitControls makeDefault maxDistance={10000000} />
             <Player />
             {geometry && <Terrain geometry={geometry} />}
             {(storeTopoMap.itinaryPtsList && storeTopoMap.itinaryPtsListVp.length) && <LineItinary
