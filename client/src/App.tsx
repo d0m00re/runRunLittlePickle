@@ -7,7 +7,7 @@ import useTopoMapStore from "./components/templates/TopoMap/topoMap.store";
 import { getFileMap, getFileItinary } from "./network/getFile";
 
 import { XMLParser, XMLBuilder, XMLValidator } from 'fast-xml-parser';
-
+import Option from "./components/templates/Action/Option";
 function App() {
   const storeTopoMap = useTopoMapStore();
 
@@ -57,6 +57,7 @@ function App() {
       <THREE.Canvas shadows>
         <TopoMap />
       </THREE.Canvas>
+      <Option />
     </div>
   )
 }
