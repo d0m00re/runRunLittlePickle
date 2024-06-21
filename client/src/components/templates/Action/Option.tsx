@@ -11,6 +11,8 @@ interface IChart {
     ptsList: IPts2d[];
 
     currentStep : number;
+
+    onClick : (clientX : number) => void;
 }
 
 function Chart(props: IChart) {
@@ -30,7 +32,10 @@ function Chart(props: IChart) {
         <svg
             width="400"
             height="200"
-            /*
+            onClick={(e) => {
+                    props.onClick(e.clientX);
+            }}
+            
             onMouseMove={(e) => {
                 // console.log("mouse evenrt : ")    
                 // console.log(e)
@@ -38,7 +43,7 @@ function Chart(props: IChart) {
                     x: e.clientX,
                     y: getY(e.clientX, props.ptsList) ?? 0// e.clientY
                 })
-            }}*/
+            }}
         >
             <polyline
                 fill="none"
@@ -88,6 +93,16 @@ function Option() {
                             setCurrPts={setPts}
                             ptsList={ptsList}
                             currentStep={storeTopoMap.currentStep}
+                            onClick={(clientX : number) => {
+                                // 
+                                console.log("let s go ")
+                                console.log(clientX);
+                                let _xIncrement = 400 / ptsList.length;
+                                let currentX = _xIncrement * clientX;
+                                let findCurrentStep = Math.floor(clientX / _xIncrement);
+                                console.log("current step : ", findCurrentStep);
+                                storeTopoMap.setCurrentStep(findCurrentStep);
+                            }}
                         />
                     </main>
                 </section> : <></>
