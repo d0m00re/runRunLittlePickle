@@ -50,8 +50,6 @@ function App() {
   useEffect(() => {
   }, [storeTopoMap.topoMap])
 
-
-
   return (
     <div id="canvas-container" className=" bg-slate-500 w-screen h-screen flex">
       <THREE.Canvas shadows>

@@ -19,7 +19,6 @@ function TopoMap() {
     const { camera } = useThree();
 
     //
-    const currentStepRef = useRef(0);
 
     useEffect(() => {
         if (storeTopoMap.topoMap?.rows.length)
@@ -48,26 +47,26 @@ function TopoMap() {
 
  
     useFrame((state, delta, xrFrame) => {
-        if (storeTopoMap.itinaryPtsListVp.length && currentStepRef.current < storeTopoMap.itinaryPtsListVp.length - 2) {
+        let currentStep = storeTopoMap.currentStep;
+        if (storeTopoMap.itinaryPtsListVp.length && currentStep < storeTopoMap.itinaryPtsListVp.length - 2) {
             
             // dirrection vector
-            let vec1 = storeTopoMap.itinaryPtsListVp[currentStepRef.current];
-            let vec2 = storeTopoMap.itinaryPtsListVp[currentStepRef.current];
+            //let vec1 = storeTopoMap.itinaryPtsListVp[currentStep];
+            let vec2 = storeTopoMap.itinaryPtsListVp[currentStep];
 
-            let vecDiff = subVect3d(vec2, vec1);
-            let vecNormalizeDir = normalizeVect3d(vecDiff);
+            //let vecDiff = subVect3d(vec2, vec1);
+            //let vecNormalizeDir = normalizeVect3d(vecDiff);
 
 //            camera.position.set(...storeTopoMap.itinaryPtsListVp[currentStepRef.current]);
-            let cameraPos = storeTopoMap.itinaryPtsListVp[currentStepRef.current];
+            let cameraPos = storeTopoMap.itinaryPtsListVp[currentStep];
             cameraPos[2] = 100;
 
             let cameraLookAt : [number, number, number] = [vec2[0], vec2[1], 100];
             camera.position.set(...cameraPos);
 
             camera.lookAt(...cameraLookAt);
-            //----
             
-            currentStepRef.current += 1;
+            storeTopoMap.incrCurrentStep();
         }
     });
 
