@@ -4,11 +4,16 @@ import * as entities from "./topoMap.entity";
 import { parseTopoMap } from './topoMap.utils';
 import { IVec3dField, IVect3d } from '../Pizza/utils/vect3d';
 
-type TStatusPlayer = "play" | "freeFly";
+export type TStatusPlayer = "play" | "stop";
+
+const revStatusPlayer = (status : TStatusPlayer) => {
+  return (status === "play") ? "stop" : "play";
+}
 
 export interface TopoMapState {
   statusPlayer: TStatusPlayer;
   setStatusPlayer: (status: TStatusPlayer) => void,
+  revStatusPlayer: () => void,
   currentStep: number;
   setCurrentStep: (step: number) => void;
   incrCurrentStep: () => void;
@@ -32,6 +37,15 @@ const useTopoMapStore = create<TopoMapState>((set) => ({
       return {
         ...state,
         statusPlayer: status
+      }
+    })
+  },
+
+  revStatusPlayer: () => {
+    set((state) => {
+      return {
+        ...state,
+        statusPlayer : revStatusPlayer(state.statusPlayer)
       }
     })
   },

@@ -48,7 +48,7 @@ function TopoMap() {
  
     useFrame((state, delta, xrFrame) => {
         let currentStep = storeTopoMap.currentStep;
-        if (storeTopoMap.itinaryPtsListVp.length && currentStep < storeTopoMap.itinaryPtsListVp.length - 2) {
+        if (storeTopoMap.statusPlayer === "play" && storeTopoMap.itinaryPtsListVp.length && currentStep < storeTopoMap.itinaryPtsListVp.length - 2) {
             
             // dirrection vector
             //let vec1 = storeTopoMap.itinaryPtsListVp[currentStep];

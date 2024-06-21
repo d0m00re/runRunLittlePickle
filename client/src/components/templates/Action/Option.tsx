@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useTopoMapStore from '../TopoMap/topoMap.store';
 import transformPtsList, { IPts2d } from './transformPtsList';
 import getY from './getY';
+import PlayPauseButton from '@/components/molecules/PlayPauseButton';
 
 interface IChart {
     width: number;
@@ -10,38 +11,43 @@ interface IChart {
     setCurrPts: (pts: IPts2d) => void;
     ptsList: IPts2d[];
 
-    currentStep : number;
+    currentStep: number;
 
-    onClick : (clientX : number) => void;
+    onClick: (clientX: number) => void;
 }
 
 function Chart(props: IChart) {
-    useEffect(() => {
-        
-    }, [props.currentStep])
-
+    useEffect(() => { }, [props.currentStep])
 
     let xIncrement = props.width / props.ptsList.length;
     let currentX = xIncrement * props.currentStep;
     let currentY = getY(currentX, props.ptsList);
 
-    console.log(`current step turn : ${props.currentStep}`);
-
+    //console.log(`current step turn : ${props.currentStep}`);
 
     return (
         <svg
             width="400"
             height="200"
-            onClick={(e) => {
-                    props.onClick(e.clientX);
+            onClick={(e: any) => {
+                console.log("------")
+                console.log("onClick Chart Event :")
+                console.log(e)
+                const boundingBox = e.currentTarget.getBoundingClientRect();
+                console.log(e.currentTarget.getBoundingClientRect())
+                let realX = e.clientX - boundingBox.x;
+                console.log(`${e.clientX} - ${boundingBox.x} === ${realX}`);
+                props.onClick(e.clientX - boundingBox.x);
             }}
-            
-            onMouseMove={(e) => {
+
+            onMouseMove={(e : any) => {
                 // console.log("mouse evenrt : ")    
                 // console.log(e)
+                const boundingBox = e.target.getBoundingClientRect();
+                let realX = e.clientX - boundingBox.x;
                 props.setCurrPts({
-                    x: e.clientX,
-                    y: getY(e.clientX, props.ptsList) ?? 0// e.clientY
+                    x: realX,
+                    y: getY(realX, props.ptsList) ?? 0// e.clientY
                 })
             }}
         >
@@ -58,9 +64,6 @@ function Chart(props: IChart) {
         </svg>
     )
 }
-//            <circle fill="red" cx={props.currPts.x} cy={props.currPts.y} r="6" stroke="yellow" />
-
-
 
 function Option() {
     const storeTopoMap = useTopoMapStore();
@@ -75,7 +78,7 @@ function Option() {
             setPtsList(arrPts);
         }
     }, [storeTopoMap.itinaryPtsListVp])
-    
+
     /*
     solu 1 : create new array with each pts with custom x
     solu 2 : calculate on the fly
@@ -85,7 +88,7 @@ function Option() {
             {(storeTopoMap.itinaryPtsListVp.length) ?
                 <section className='absolute z-10'>
 
-                    <main className='flex bg-slate-50'>
+                    <main className='flex bg-slate-50 flex-col justify-center items-center'>
                         <Chart
                             width={400}
                             height={200}
@@ -93,16 +96,20 @@ function Option() {
                             setCurrPts={setPts}
                             ptsList={ptsList}
                             currentStep={storeTopoMap.currentStep}
-                            onClick={(clientX : number) => {
+                            onClick={(clientX: number) => {
                                 // 
                                 console.log("let s go ")
                                 console.log(clientX);
                                 let _xIncrement = 400 / ptsList.length;
                                 let currentX = _xIncrement * clientX;
                                 let findCurrentStep = Math.floor(clientX / _xIncrement);
-                                console.log("current step : ", findCurrentStep);
+                                // console.log("current step : ", findCurrentStep);
                                 storeTopoMap.setCurrentStep(findCurrentStep);
                             }}
+                        />
+                        <PlayPauseButton
+                            status={storeTopoMap.statusPlayer}
+                            onClick={() => storeTopoMap.revStatusPlayer()}
                         />
                     </main>
                 </section> : <></>
@@ -112,4 +119,3 @@ function Option() {
 }
 
 export default Option;
-//                        <p>{400 / storeTopoMap.itinaryPtsListVp.length}</p>

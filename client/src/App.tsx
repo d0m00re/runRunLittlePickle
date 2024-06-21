@@ -51,7 +51,9 @@ function App() {
   }, [storeTopoMap.topoMap])
 
   return (
-    <div id="canvas-container" className=" bg-slate-500 w-screen h-screen flex">
+    <div
+      id="canvas-container"
+      className=" bg-slate-500 w-screen h-screen flex justify-center items-end">
       <THREE.Canvas shadows>
         <TopoMap />
       </THREE.Canvas>
