@@ -1,4 +1,4 @@
-import { IVect3d } from "../utils/vect3d";
+import { IVect3d } from "@/utils/vect3d";
 
 export type TKindIngrediant = "mushroom" | "olive" | "chorizon" | "cheese";
 export type TKindArr  = TKindIngrediant[];

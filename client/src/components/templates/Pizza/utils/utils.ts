@@ -1,4 +1,4 @@
-import { IVect3d } from "./vect3d";
+import { IVect3d } from "@/utils/vect3d";
 
 export function getRandomPointInCircle(radius: number): [number, number] {
     const theta = 2 * Math.PI * Math.random();

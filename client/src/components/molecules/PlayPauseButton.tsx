@@ -1,4 +1,3 @@
-import React from 'react';
 import {Play, Pause} from "lucide-react";
 import { TStatusPlayer } from '../templates/TopoMap/topoMap.store';
 
@@ -17,4 +16,4 @@ const PlayPauseButton = (props: Props) => {
   )
 }
 
-export default PlayPauseButton
+export default PlayPauseButton;

@@ -1,4 +1,4 @@
-import { IPts2d } from "./transformPtsList";
+import { IPts2d } from "@/utils/vect3d";
 
 const getY = (currentX: number, listPts: IPts2d[]) => {
     let startPtsIndex = -1;
@@ -21,7 +21,6 @@ const getY = (currentX: number, listPts: IPts2d[]) => {
     let diffY = listPts[startPtsIndex + 1].y - listPts[startPtsIndex].y;
     let currentY = listPts[startPtsIndex].y + (diffY * xPercentRel)
 
-    // 
     return currentY;
 }
 

@@ -4,6 +4,12 @@ export type IVec3dField = {
     y : number;
     z : number;
 }
+
+export interface IPts2d {
+    x: number;
+    y: number;
+}
+
 export const addVect3d = (v1 : IVect3d, v2 : IVect3d) : IVect3d => {
     return ([
         v1[0] + v2[0],

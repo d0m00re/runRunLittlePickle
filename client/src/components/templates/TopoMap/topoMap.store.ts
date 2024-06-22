@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import * as entities from "./topoMap.entity";
 import { parseTopoMap } from './topoMap.utils';
-import { IVec3dField, IVect3d } from '../Pizza/utils/vect3d';
+import { IVec3dField, IVect3d } from '@/utils/vect3d';
 
 export type TStatusPlayer = "play" | "stop";
 

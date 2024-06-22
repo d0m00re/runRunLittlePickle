@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import useTopoMapStore from '../TopoMap/topoMap.store';
-import transformPtsList, { IPts2d } from './transformPtsList';
+import transformPtsList from './transformPtsList';
 import getY from './getY';
 import PlayPauseButton from '@/components/molecules/PlayPauseButton';
+import { IPts2d } from '@/utils/vect3d';
 
 interface IChart {
     width: number;
@@ -23,31 +24,21 @@ function Chart(props: IChart) {
     let currentX = xIncrement * props.currentStep;
     let currentY = getY(currentX, props.ptsList);
 
-    //console.log(`current step turn : ${props.currentStep}`);
-
     return (
         <svg
             width="400"
             height="200"
             onClick={(e: any) => {
-                console.log("------")
-                console.log("onClick Chart Event :")
-                console.log(e)
                 const boundingBox = e.currentTarget.getBoundingClientRect();
-                console.log(e.currentTarget.getBoundingClientRect())
-                let realX = e.clientX - boundingBox.x;
-                console.log(`${e.clientX} - ${boundingBox.x} === ${realX}`);
                 props.onClick(e.clientX - boundingBox.x);
             }}
 
             onMouseMove={(e : any) => {
-                // console.log("mouse evenrt : ")    
-                // console.log(e)
                 const boundingBox = e.target.getBoundingClientRect();
                 let realX = e.clientX - boundingBox.x;
                 props.setCurrPts({
                     x: realX,
-                    y: getY(realX, props.ptsList) ?? 0// e.clientY
+                    y: getY(realX, props.ptsList) ?? 0
                 })
             }}
         >

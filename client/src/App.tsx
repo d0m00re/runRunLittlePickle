@@ -4,13 +4,14 @@ import * as THREE from "@react-three/fiber";
 import "./index.css";
 import TopoMap from "./components/templates/TopoMap/TopoMap";
 import useTopoMapStore from "./components/templates/TopoMap/topoMap.store";
+import useGlobalStore from "./store/global.store";
 import { getFileMap, getFileItinary } from "./network/getFile";
 
 import { XMLParser, XMLBuilder, XMLValidator } from 'fast-xml-parser';
 import Option from "./components/templates/Action/Option";
 function App() {
   const storeTopoMap = useTopoMapStore();
-
+  const globalStore = useGlobalStore();
   // rework with allSettled
   useEffect(() => {
     // file map

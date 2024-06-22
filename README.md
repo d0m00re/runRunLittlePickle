@@ -1,6 +1,19 @@
 # runRunLittlePickle
 run run little pickle
 
+## bug
+* camera reset when we click on timeline
+* gpx trace don t correctly match the map
+
+## improve
+* rework shader
+* show elevation information on timeline
+* timeline ui integration improvement
+
+## feature
+* user account
+* create a map + import gpx trace
+
 ## geoJSON
 GeoJSON est un format ouvert d'échange de données géospatiales utilisant la norme JSON représentant des entités géographiques simples et leurs attributs non spatiaux
 

@@ -1,9 +1,4 @@
-import { IVect3d } from "../Pizza/utils/vect3d";
-
-export interface IPts2d {
-    x: number;
-    y: number;
-}
+import { IPts2d, IVect3d } from "@/utils/vect3d";
 
 /**
  * 

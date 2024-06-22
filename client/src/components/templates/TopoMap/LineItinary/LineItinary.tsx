@@ -1,4 +1,4 @@
-import { IVect3d } from '../../Pizza/utils/vect3d';
+import { IVect3d } from '@/utils/vect3d';
 import { Line } from '@react-three/drei';
 
 type ILineItinary = {
