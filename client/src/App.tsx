@@ -8,7 +8,7 @@ import useGlobalStore from "./store/global.store";
 import { getFileMap, getFileItinary } from "./network/getFile";
 
 import { XMLParser, XMLBuilder, XMLValidator } from 'fast-xml-parser';
-import Option from "./components/templates/Action/Option";
+import ItinaryTimeLine from "./components/templates/Action/ItinaryTimeLine";
 function App() {
   const storeTopoMap = useTopoMapStore();
   const globalStore = useGlobalStore();
@@ -58,7 +58,7 @@ function App() {
       <THREE.Canvas shadows>
         <TopoMap />
       </THREE.Canvas>
-      <Option />
+      <ItinaryTimeLine />
     </div>
   )
 }

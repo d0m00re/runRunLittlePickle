@@ -1,7 +1,7 @@
 import findPosWithGps from "@/utils/findPosWithGps";
-import { IVec3dField } from "../Pizza/utils/vect3d";
 import { IAscInfo, IDataMap } from "./topoMap.entity";
 import * as THREE from "three";
+import { IVec3dField } from "@/utils/vect3d";
 
 export const makeEmptyIAscInfo = (): IAscInfo => ({
     ncols: 0,
@@ -150,3 +150,15 @@ export const _generateGpsPosToMapPos = (props : IGenerateGpsPosToMapPos) => {
   return newFuckingPts;
   //storeTopoMap.setItinaryPtsListVp(newFuckingPts);
 }
+
+export interface IStats {
+    maxHeight : number;
+    minHeight : number;
+    distance : number;
+  }
+  
+export const makeEmptyIStats = () : IStats => ({
+    maxHeight : 0,
+    minHeight : 0,
+    distance : 0
+  })

@@ -4,6 +4,7 @@ import transformPtsList from './transformPtsList';
 import getY from './getY';
 import PlayPauseButton from '@/components/molecules/PlayPauseButton';
 import { IPts2d } from '@/utils/vect3d';
+import { IStats } from '../TopoMap/topoMap.utils';
 
 interface IChart {
     width: number;
@@ -33,7 +34,7 @@ function Chart(props: IChart) {
                 props.onClick(e.clientX - boundingBox.x);
             }}
 
-            onMouseMove={(e : any) => {
+            onMouseMove={(e: any) => {
                 const boundingBox = e.target.getBoundingClientRect();
                 let realX = e.clientX - boundingBox.x;
                 props.setCurrPts({
@@ -56,7 +57,19 @@ function Chart(props: IChart) {
     )
 }
 
-function Option() {
+interface IPropsStats {
+    stats : IStats;
+}
+
+function ViewStats(props : IPropsStats) {
+    return <section className='flex flex-col justify-between h-[200px]'>
+        <p>{props.stats.maxHeight.toFixed(2)} m</p>
+        <p>{((props.stats.maxHeight - props.stats.minHeight) / 2).toFixed(2)} m</p>
+        <p>{props.stats.minHeight.toFixed(2)} m</p>
+    </section>
+}
+
+function ItinaryTimeLine() {
     const storeTopoMap = useTopoMapStore();
 
     const [pts, setPts] = useState<IPts2d>({ x: 100, y: 100 });
@@ -78,8 +91,11 @@ function Option() {
         <>
             {(storeTopoMap.itinaryPtsListVp.length) ?
                 <section className='absolute z-10'>
-
-                    <main className='flex bg-slate-50 flex-col justify-center items-center'>
+                    <main className='flex bg-slate-50 flex-row justify-center items-center p-5 gap-5 mb-5 rounded-lg'>
+                        <PlayPauseButton
+                            status={storeTopoMap.statusPlayer}
+                            onClick={() => storeTopoMap.revStatusPlayer()}
+                        />
                         <Chart
                             width={400}
                             height={200}
@@ -98,10 +114,7 @@ function Option() {
                                 storeTopoMap.setCurrentStep(findCurrentStep);
                             }}
                         />
-                        <PlayPauseButton
-                            status={storeTopoMap.statusPlayer}
-                            onClick={() => storeTopoMap.revStatusPlayer()}
-                        />
+                        <ViewStats stats={storeTopoMap.stats} />
                     </main>
                 </section> : <></>
             }
@@ -109,4 +122,4 @@ function Option() {
     )
 }
 
-export default Option;
+export default ItinaryTimeLine;

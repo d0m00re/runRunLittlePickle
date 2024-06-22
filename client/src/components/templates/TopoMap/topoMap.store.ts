@@ -1,8 +1,10 @@
 // src/store.ts
 import { create } from 'zustand';
 import * as entities from "./topoMap.entity";
-import { parseTopoMap } from './topoMap.utils';
+import { IStats, makeEmptyIStats, parseTopoMap } from './topoMap.utils';
 import { IVec3dField, IVect3d } from '@/utils/vect3d';
+
+
 
 export type TStatusPlayer = "play" | "stop";
 
@@ -11,6 +13,10 @@ const revStatusPlayer = (status : TStatusPlayer) => {
 }
 
 export interface TopoMapState {
+  stats : IStats;
+  setStats : (stats : IStats) => void;
+
+
   statusPlayer: TStatusPlayer;
   setStatusPlayer: (status: TStatusPlayer) => void,
   revStatusPlayer: () => void,
@@ -31,6 +37,15 @@ export interface TopoMapState {
 }
 
 const useTopoMapStore = create<TopoMapState>((set) => ({
+  stats : makeEmptyIStats(),
+  setStats : (stats : IStats) => {
+    set((state) => {
+      return {
+        ...state,
+        stats
+      }
+    })
+  },
   statusPlayer: "play",
   setStatusPlayer: (status: TStatusPlayer) => {
     set((state) => {
@@ -97,9 +112,27 @@ const useTopoMapStore = create<TopoMapState>((set) => ({
     })
   },
   setItinaryPtsListVp: (list: IVect3d[]) => {
+    console.log("****** store : ");
+    console.log(list);
+
+    let maxHeight = Math.max(...list.map(e => e[2]))
+    let minHeight = Math.min(...list.map(e => e[2]))
+    let distance = 0;
+
+    console.log({
+      maxHeight,
+      minHeight,
+      distance
+    })
+
     set((state) => {
       return {
         ...state,
+        stats : {
+          maxHeight : maxHeight,
+          minHeight : minHeight,
+          distance
+        },
         itinaryPtsListVp: list
       }
     })
