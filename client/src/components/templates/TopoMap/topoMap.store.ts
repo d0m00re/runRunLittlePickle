@@ -3,8 +3,8 @@ import { create } from 'zustand';
 import * as entities from "./topoMap.entity";
 import { IStats, makeEmptyIStats, parseTopoMap } from './topoMap.utils';
 import { IVec3dField, IVect3d } from '@/utils/vect3d';
-
-
+import { CatmullRomCurve3, Vector3 } from 'three';
+ 
 
 export type TStatusPlayer = "play" | "stop";
 
@@ -32,11 +32,13 @@ export interface TopoMapState {
   setItinaryPtsList: (list: IVec3dField[]) => void;
 
   itinaryPtsListVp: IVect3d[];
+  curve : CatmullRomCurve3 | undefined;
   setItinaryPtsListVp: (list: IVect3d[]) => void;
 
 }
 
 const useTopoMapStore = create<TopoMapState>((set) => ({
+  curve : undefined,
   stats : makeEmptyIStats(),
   setStats : (stats : IStats) => {
     set((state) => {
@@ -112,22 +114,26 @@ const useTopoMapStore = create<TopoMapState>((set) => ({
     })
   },
   setItinaryPtsListVp: (list: IVect3d[]) => {
-    console.log("****** store : ");
-    console.log(list);
-
     let maxHeight = Math.max(...list.map(e => e[2]))
     let minHeight = Math.min(...list.map(e => e[2]))
     let distance = 0;
 
-    console.log({
-      maxHeight,
-      minHeight,
-      distance
-    })
+    // calcul total distance
+    const listPts = list.map(e => {
+      return new Vector3(e[0], e[1], e[2]);
+    });
 
+    console.log("----> curve :")
+    let curve = new CatmullRomCurve3(listPts);
+   // const curve = new THREE
+
+   // list pts
+   console.log("----- list pts")
+    console.log(list)
     set((state) => {
       return {
         ...state,
+        curve : curve,
         stats : {
           maxHeight : maxHeight,
           minHeight : minHeight,

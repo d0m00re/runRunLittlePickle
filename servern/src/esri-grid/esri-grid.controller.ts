@@ -5,8 +5,8 @@ import { join } from 'path';
 import { DtoGetFileCoord } from './esri-grid.schema';
 
 const filePathBelleIle = "belleile.asc";
-const fileGpx = "palais-la-pointe-des-poulains.gpx"
-
+const fileGpxOld = "palais-la-pointe-des-poulains.gpx"
+const fileGpx = "visorando-pointe-des-poulains-aiguilles-de-port-coton.gpx"
 
 @Controller('esri-grid')
 export class EsriGridController {
